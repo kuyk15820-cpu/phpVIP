@@ -1,6 +1,5 @@
 name: Build and Deploy PHP
 
-# 🟢 กำหนดให้รันด้วยการกดปุ่มสั่งเอง และมีช่องให้กรอกข้อมูล
 on:
   workflow_dispatch:
     inputs:
@@ -14,7 +13,8 @@ on:
       ftp_password:
         description: 'FTP Password'
         required: true
-        type: boolean # หรือไม่ใส่ประเภทเพื่อให้เป็นข้อความซ่อนได้
+        # 🟢 ลบ type: boolean ออก เพื่อให้เปลี่ยนจากสวิตช์เป็นช่องพิมพ์ข้อความปกติ
+        type: string 
 
 jobs:
   build-and-deploy:
@@ -35,7 +35,7 @@ jobs:
     - name: Install Dependencies
       run: composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
-    # 4. ส่งไฟล์ทั้งหมดขึ้น Server ผ่าน FTP โดยดึงค่าจากช่องที่คุณกรอก
+    # 4. ส่งไฟล์ทั้งหมดขึ้น Server ผ่าน FTP
     - name: Sync files to Server via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
